@@ -54,7 +54,7 @@
                     <h2 id="welcome-heading">Welcome to the Dashboard, {{ user.username }}!</h2><hr>
                     <div id="company-assets" class="dashboard-section">
                         <h2>Assets Collection</h2>
-                        <button class="btn btn-primary mb-3" id="add-device">Add Device</button>
+                        <button class="btn btn-primary mb-3" id="add-asset">Add Asset</button>
                         <table class="table" id="device-table">
                             <thead>
                                 <tr>
@@ -187,7 +187,7 @@
             });
     
             // Click event handler for the Add Device button
-            $("#add-device").click(function() {
+            $("#add-asset").click(function() {
                 // Fetch the company ID dynamically before adding a device
                 fetchCompanyID();
             });

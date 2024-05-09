@@ -105,14 +105,12 @@ def get_company_ID(request):
 @api_view(['POST'])
 def add_asset(request):
     if request.method == 'POST':
-        # Assuming you're passing the device name and company ID in the request data
         name = request.data.get('name')
         company_id = request.data.get('company_id')
 
-        # Create a new device object
+ 
         device = Device.objects.create(name=name, company_id=company_id)
 
-        # Serialize the created device object
         serializer = DeviceSerializer(device)
 
         return Response(serializer.data)
