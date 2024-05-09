@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        /* Initial hide for dashboard sections */
+        .dashboard-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Company Asset Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <h4>Dashboard Menu</h4>
+                    <ul>
+                        <li><a href="#company-assets" class="menu-link">Company Assets</a></li>
+                        <li><a href="#borrowing-history" class="menu-link">Assets History</a></li>
+                        <li><a href="#branch-management" class="menu-link">Branch Management</a></li>
+                        <li><a href="#employee-management" class="menu-link">Employee Management</a></li>
+                        <li><a href="#borrow-request-management" class="menu-link">Borrow Request Management</a></li>
+                        <li><a href="#branch-manager-assignment" class="menu-link">Branch Manager Assignment</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Placeholder for dashboard content -->
+                    <h2 id="welcome-heading">Welcome to the Dashboard, {{ user.username }}!</h2><hr>
+                    <div id="company-assets" class="dashboard-section">
+                        <h2>Assets Collection</h2>
+                        <button class="btn btn-primary mb-3" id="add-device">Add Device</button>
+                        <table class="table" id="device-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Checked Out</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows will be added dynamically using JavaScript -->
+                            </tbody>
+                        </table>
+                        <button class="btn btn-success" id="save-devices">Save Devices</button>
+                    </div>
+                    <div id="borrowing-history" class="dashboard-section">
+                        <h2>Assets history</h2>
+                    </div>
+                    <div id="branch-management" class="dashboard-section">
+                        <h2>Branch Management</h2>
+                    </div>
+                    <div id="employee-management" class="dashboard-section">
+                        <h2>Employee</h2>
+                    </div>
+                    <div id="borrow-request-management" class="dashboard-section">
+                        <h2>Borrow Request</h2>
+                    </div>
+                    <div id="branch-manager-assignment" class="dashboard-section">
+                        <h2>Branch Manager</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to fetch and populate device data
+            function populateDeviceTable() {
+                fetch('/api/company_assets_list/')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(devices => {
+                        console.log(devices);
+                        var tableBody = $('#device-table tbody');
+                        tableBody.empty();
+                        devices.forEach(device => {
+                            var row = '<tr>' +
+                                '<td>' + device.name + '</td>' +
+                                '<td>' + device.company + '</td>' +
+                                '<td>' + (device.checked_out ? 'Yes' : 'No') + '</td>' +
+                                '<td><button class="btn btn-warning mb-3 delete-device" data-device-id="' + device.id + '">Delete</button></td>' +
+                                '</tr>';
+                            tableBody.append(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching device data:', error);
+                    });
+            }
+    
+            // Function to fetch company ID
+            function fetchCompanyID() {
+                fetch('/api/get_company_ID/')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Once the company ID is retrieved, execute the addDevice function
+                        addDevice(data.company_id);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching company ID:', error);
+                    });
+            }
+    
+            // Add Device function with company ID as parameter
+            function addDevice(companyId) {
+                var deviceName = prompt("Enter device name:");
+    
+                // Check if the device name is provided
+                if (deviceName) {
+                    // AJAX request to add device
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/add_device/",
+                        data: JSON.stringify({ name: deviceName, company_id: companyId }),
+                        contentType: "application/json",
+                        success: function(response) {
+                            // Refresh the device table after successful addition
+                            populateDeviceTable();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error adding device:", error);
+                        }
+                    });
+                }
+            }
+    
+            // Initial population of the device table
+            populateDeviceTable();
+    
+            // Click event handler for menu links
+            $(".menu-link").click(function(e) {
+                e.preventDefault();
+                var target = $(this).attr("href");
+                $(".dashboard-section").hide();
+                $("#welcome-heading").hide(); // Hide the welcome heading when a menu item is clicked
+                $(target).show();
+    
+                // If the target is 'company-assets', populate the device table
+                if (target === '#company-assets') {
+                    populateDeviceTable();
+                }
+            });
+    
+            // Click event handler for the Add Device button
+            $("#add-device").click(function() {
+                // Fetch the company ID dynamically before adding a device
+                fetchCompanyID();
+            });
+    
+            // Click event handler for deleting a device
+            $('#device-table').on('click', '.delete-device', function() {
+                var deviceId = $(this).data('device-id');
+    
+                // AJAX request to delete device
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/delete_device/" + deviceId + "/",
+                    success: function(response) {
+                        // Refresh the device table after successful deletion
+                        populateDeviceTable();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error deleting device:", error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+
+    
+</body>
+</html>

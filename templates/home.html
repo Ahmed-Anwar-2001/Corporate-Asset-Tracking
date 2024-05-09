@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snoop Asset Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Snoop Asset Tracker</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#demo">Demo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to Snoop Asset Tracker</h2>
+            <p>Your Complete Corporate Asset Tracking Solution</p>
+            <a href="#demo" class="btn1">Schedule Demo</a>
+        </div>
+    </section>
+
+    <section id="features" class="features animated-section">
+        <div class="container">
+            <h2>Why Choose Snoop Asset Tracker?</h2>
+            <ul>
+                <li>Real-time Asset Visibility: Gain complete visibility into your assets with our advanced tracking technology. Monitor the location, status, and usage of your assets in real-time, ensuring optimal utilization and minimizing loss or theft.</li>
+                <li>Customizable Tracking Solutions: Tailor our asset tracking system to meet your specific needs. Whether you're tracking equipment, vehicles, IT assets, or inventory, our flexible solutions can be customized to fit seamlessly into your existing workflows.</li>
+                <li>Effortless Integration: Our system seamlessly integrates with your existing enterprise software, including ERP, CRM, and inventory management systems, ensuring a smooth transition and minimal disruption to your operations.</li>
+                <li>Enhanced Security: Protect your valuable assets with robust security features, including geofencing, tamper alerts, and access controls. Rest easy knowing your assets are secure at all times.</li>
+                <li>Comprehensive Reporting: Generate insightful reports and analytics to track asset performance, maintenance schedules, and compliance requirements. Make data-driven decisions to optimize asset utilization and reduce operational costs.</li>
+                <li>Scalable and Future-Proof: Whether you're a small business or a large enterprise, our scalable solutions grow with your business needs. Stay ahead of the curve with continuous updates and new features to future-proof your asset management strategy.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2>Experience the Snoop Asset Tracker Advantage</h2>
+            <p>Unlock the full potential of your corporate assets with Snoop Asset Tracker. Our user-friendly interface, reliable tracking technology, and dedicated support team ensure a seamless experience from implementation to ongoing support.</p>
+            
+            <div class="container start">
+                <h4>Get Started Today</h4>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Sign In</h5>
+                                <p class="card-text">Already have an account? Sign in to access your dashboard.</p>
+                                <a href="/login" class="btn1">Sign In</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Register</h5>
+                                <p class="card-text">New to Snoop Asset Tracker? Register now to get started.</p>
+                                <a href="/register" class="btn1">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Transform the way you manage your corporate assets. Contact us for a personalized demo and discover how Snoop Asset Tracker can drive efficiency, security, and growth for your business.</p>
+            <div>
+                <a href="#" class="btn1">Contact Us</a>
+                <a href="#" class="btn1">Schedule Demo</a>
+                <a href="#" class="btn1">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Snoop Asset Tracker. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+</body>
+</html>

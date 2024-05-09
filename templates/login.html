@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var loginForm = document.getElementById("login-form");
+            var errorMessage = document.getElementById("error-message");
+    
+            loginForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                var formData = new FormData(loginForm);
+                var formDataObject = {};
+                formData.forEach(function(value, key) {
+                    formDataObject[key] = value;
+                });
+    
+                // Fetch CSRF token from cookie
+                var csrftoken = getCookie('csrftoken');
+    
+                fetch("/api/user_login/", {
+                    method: "POST",
+                    body: JSON.stringify(formDataObject),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken  // Include CSRF token in headers
+                    }
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Invalid credentials");
+                    }
+                })
+                .then(function(data) {
+                    // Successful login, handle token or redirect
+                    console.log("Login successful");
+                    console.log(data);
+                    // For example, store token in local storage and redirect
+                    localStorage.setItem("token", data.token);
+                    window.location.href = "/dashboard"; // Redirect to dashboard
+                })
+                .catch(function(error) {
+                    // Handle login error
+                    console.error("Error:", error);
+                    errorMessage.textContent = "Invalid username or password";
+                });
+            });
+    
+            // Function to get CSRF token from cookie
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+    
+</body>
+</html>
